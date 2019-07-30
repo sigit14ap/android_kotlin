@@ -9,9 +9,13 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
-        <activity android:name=".Tambah">
+        <activity
+                android:name=".Tambah"
+                android:theme="@style/AppTheme.NoActionBar">
         </activity>
-        <activity android:name=".Dashboard">
+        <activity
+                android:name=".Dashboard"
+                android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
                 android:name=".MainActivity"
