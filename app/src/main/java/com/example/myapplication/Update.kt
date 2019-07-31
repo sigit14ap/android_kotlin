@@ -2,7 +2,7 @@ package com.example.myapplication
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import kotlinx.android.synthetic.main.activity_tambah.*
+import kotlinx.android.synthetic.main.activity_update.*
 import android.widget.DatePicker
 import android.app.DatePickerDialog
 import android.content.Intent
@@ -19,30 +19,32 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 
 
-class Tambah : AppCompatActivity() {
+class Update : AppCompatActivity() {
 
     lateinit var ref : DatabaseReference
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_tambah)
+        setContentView(R.layout.activity_update)
+
+        val barang = intent.getStringExtra("BARANG")
 
         inputTanggal.setOnTouchListener(object : OnTouchListener {
             override fun onTouch(v: View, event: MotionEvent): Boolean {
 
-                inputTanggal.setShowSoftInputOnFocus(false);
-                inputTanggal.setInputType(InputType.TYPE_NULL);
-                inputTanggal.setFocusable(false);
+                inputTanggal.showSoftInputOnFocus = false
+                inputTanggal.inputType = InputType.TYPE_NULL
+                inputTanggal.isFocusable = false
 
                 if (MotionEvent.ACTION_UP == event.action){
                     val newCalendar = Calendar.getInstance()
 
-                    val datePickerDialog = DatePickerDialog(this@Tambah,
+                    val datePickerDialog = DatePickerDialog(this@Update,
                         DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
                             val newDate = Calendar.getInstance()
                             newDate.set(year, monthOfYear, dayOfMonth)
                             val dateFormatter = SimpleDateFormat("dd-MM-yyyy", Locale.US)
-                            inputTanggal.setText(dateFormatter.format(newDate.getTime()))
+                            inputTanggal.setText(dateFormatter.format(newDate.time))
                         },
                         newCalendar.get(Calendar.YEAR),
                         newCalendar.get(Calendar.MONTH),
@@ -61,11 +63,10 @@ class Tambah : AppCompatActivity() {
             val nama_barang = inputNama.text.toString()
             val tanggal = inputTanggal.text.toString()
 
-            val userId = ref.push().key.toString()
-            val barang = m_barang(userId,nama_barang,tanggal)
+            val barang = m_barang(barang.id,nama_barang,tanggal)
 
-            ref.child(userId).setValue(barang).addOnCompleteListener {
-                Toast.makeText(this, "Sukses",Toast.LENGTH_SHORT).show()
+            ref.child(barang.id).setValue(barang).addOnCompleteListener {
+                Toast.makeText(this, "Updated",Toast.LENGTH_SHORT).show()
                 inputNama.setText("")
                 inputTanggal.setText("")
                 val intent = Intent(this, List::class.java)

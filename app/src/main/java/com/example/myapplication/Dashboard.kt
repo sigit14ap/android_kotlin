@@ -15,5 +15,10 @@ class Dashboard : AppCompatActivity() {
             val intent = Intent(this, Tambah::class.java)
             startActivity(intent)
         }
+
+        btnList.setOnClickListener{
+            val intent = Intent(this, List::class.java)
+            startActivity(intent)
+        }
     }
 }
